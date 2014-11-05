@@ -63,6 +63,17 @@ var nAn_algebra_module = function() {
         return result;
     }
 
+    this.Matrix.prototype.transpose(m) {
+        result = new this.Matrix([this.size[1], this.size[0]]);
+        for (i=0; i<this.size[0]; i++) {
+            for (j=0; j<this.size[1]; j++) {
+                result.array[j+result.size[0]*i] = this.array[i+this.size[0]*j];
+            }
+        }
+        return result;
+
+    }
+
     this.Matrix.prototype.iAdd(m) {
         if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
