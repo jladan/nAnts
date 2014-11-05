@@ -6,7 +6,7 @@ nAnjs is a library providing the tools for numerical analysis in the browser 100
 
 # Features
 
-Performance is attained by using striped arrays for all multidimensional matrix manipulation. The default is column-major indexing, but striping allows for very fast transposition. For accurate and stable behaviour, the best algorithms are chosen for each function.
+Performance is attained by using flat arrays for all multidimensional matrix manipulation, using column-major order. Algorithms are chosen by accuracy/stability first, then speed. Often, multiple algorithms will be offered for the same task.
 
 The various tools are split into modules based on problem type
 
