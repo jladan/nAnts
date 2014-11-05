@@ -1,0 +1,40 @@
+Verification:
+	- figure out a way to compare my results to trusted solutions.
+
+Code Organization:
+	- separate js code into modules (ode solvers, root finders, etc.) @done(2014-11-02)
+	- put the Numeric library into its own directory/repository @done(2014-11-05)
+	- put the web app into its own directory
+
+Numerical Analysis Library:
+
+	Linear Algebra:
+		- Create basic matrix object
+		- code up matrix-vector
+		- code up matrix-multiply
+			Focus is on low-dimensional matrices, so simpler algorithms are OK for now
+		- Transpose matrix
+		- Matrix inversion
+		- decide on in-place vs. new buffer methods for interface
+		The new buffer methods could either overide the current buffer being written into or just create a new one.
+		- LU Decomposition
+		- QR decomposition
+	
+	Root-Finding:
+		- newton-raphson is most important
+		- other fixed point methods might work too?
+		- bisection method
+		- 1D newton 
+	
+	ODE Solvers:
+		- Add options for intrinsic and extrinsic noise
+		- Explicit Runge-Kutta fixed order
+		- Leap Frog @done(2014-11-05)
+		- generic linear multistep
+		- Runge-kutta 45 and 23 ftw
+	
+	PDE Solvers:
+		The intention is for simple 1D problems (Burgers eq'n, etc)
+		- Finite difference 
+		- Finite Volume
+		- DG methods
