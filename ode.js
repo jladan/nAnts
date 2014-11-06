@@ -81,14 +81,14 @@ var nAn_ode_module = function() {
         var x_new = x_cur.slice();
         var x_prime_cur = x_prime_old.slice();
         for (i = 1; i < N-1; i++) {
-            x_prime_old = derivative(x_old, t[i], parameters)
             x_prime_cur = derivative(x_cur, t[i], parameters)
             t[i+1] = (i+1) * dt;
             for (j = 0; j < d; j++) {
                 result[i + 1 + j * N] = x_new[j] =
-                    x_cur[j] + 3/2*dt * x_prime_cur[j] - 1/2*dt * x_prime_old[j];
+                    x_cur[j] + dt*(3* x_prime_cur[j] - x_prime_old[j])/2;
                 x_old[j] = x_cur[j];
                 x_cur[j] = x_new[j];
+                x_prime_old[j] = x_prime_cur[j];
             }
         }
         return [t, result, N];
