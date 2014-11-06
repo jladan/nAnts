@@ -9,14 +9,13 @@ Code Organization:
 Numerical Analysis Library:
 
 	Linear Algebra:
-		- Create basic matrix object
-		- code up matrix-vector
-		- code up matrix-multiply
-			Focus is on low-dimensional matrices, so simpler algorithms are OK for now
-		- Transpose matrix
+		- Create basic matrix object @done(2014-11-06)
+		- code up matrix-vector @done(2014-11-06)
+		- code up matrix-multiply @done(2014-11-06)
+		- Transpose matrix @done(2014-11-06)
+		- Decide on column-major vs. row-major
+			It may be easier to do row-swapping for pivoting.
 		- Matrix inversion
-		- decide on in-place vs. new buffer methods for interface
-		The new buffer methods could either overide the current buffer being written into or just create a new one.
 		- LU Decomposition
 		- QR decomposition
 	
@@ -26,6 +25,14 @@ Numerical Analysis Library:
 		- bisection method
 		- 1D newton 
 	
+	Stochastics:
+		- Stochastic solvers for ODE's
+		- Create functions for means, variance, etc.
+		- maybe some time-average and ensemble average stuff
+		- Forward gillespie solver could be cool
+		- perhaps higher order stochastic solvers
+
+
 	ODE Solvers:
 		- Add options for intrinsic and extrinsic noise
 		- Explicit Runge-Kutta fixed order

@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Compare models</title>
+    <script type="text/javascript" src="../flot/jquery.js"></script>
+    <script type="text/javascript" src="../flot/jquery.flot.js"></script>
+    <script type="text/javascript" src=../ode.js></script>
+    <script type="text/javascript" src=../demos/systems.js></script>
+    <script type="text/javascript">
+        nAn_ode_module.apply(this);
+        demo_systems_module.apply(this);
+    </script>
+</head>
+<body>
+    <div>
+        <div id="plotarea" style="width:45%;height:400px;display:inline-block;"></div>
+        <div id="phasearea" style="width:45%;height:400px;display:inline-block;"></div>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    var t, N, x, xdot, d1, d2, d3
+
+    var plot_difference = function (sol1,sol2) {
+        t = sol1[0];
+        N = sol1[2];
+        x1 = sol1[1].subarray(0, N);
+        x2 = sol2[1].subarray(0, N);
+        xdot1 = sol1[1].subarray(N);
+        xdot2 = sol2[1].subarray(N);
+        d1 = []; d2 = []; d3 = []; d4=[];
+        for (i = 0; i < N; i++) {
+            d1[i] = [t[i], x1[i]-x2[i]];
+            d3[i] = [t[i], xdot1[i]-xdot2[i]];
+        }
+        $.plot("#plotarea", [d1]);
+        $.plot("#phasearea", [d3])
+    }
+</script>
+
+</html>

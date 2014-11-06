@@ -1,5 +1,5 @@
-/* Usage: MathematicalSimulations_module.apply(namespace) */
-var MathematicalSimulations_module = function () {
+/* Usage: demo_systems_module.apply(namespace) */
+var demo_systems_module = function () {
     /* The Van Der Pol oscillator derivative function
      * 
      * even though there is one parameter, the ODE solvers call this function
