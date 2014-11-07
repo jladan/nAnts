@@ -1,6 +1,6 @@
 'use strict';
 
-var algebra = require('../algebra.js');
+var algebra = require('../lib/algebra.js');
 
 describe('Matrix', function () {
     describe('#Creation', function () {
