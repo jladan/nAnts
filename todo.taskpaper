@@ -5,6 +5,7 @@ Code Organization:
 	- separate js code into modules (ode solvers, root finders, etc.) @done(2014-11-02)
 	- put the Numeric library into its own directory/repository @done(2014-11-05)
 	- put the web app into its own directory
+	- nAn is a good name, but not unique. Come up with a new name
 
 Numerical Analysis Library:
 

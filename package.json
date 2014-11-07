@@ -1,0 +1,13 @@
+{
+    "name": "nAn",
+    "version": "0.1.0",
+
+    "devDependencies": {
+        "mocha": "*",
+        "should": ">= 0.0.1"
+    },
+
+    "scripts": {
+        "test": "mocha -w"
+    }
+}
