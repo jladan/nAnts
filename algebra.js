@@ -14,20 +14,43 @@
 /* Usage: nAn_algebra_module.apply(namespace) */
 var nAn_algebra_module = function() {
 
-    /* Matrix object 
-     * For now, only 2D matrices are supported 
-     * (vectors ar basically supported when one size dimension is zero)
-    */
-    this.Matrix = function(size) {
+    var THIS = this;
+
+    /* Matrix object
+     *
+     * Creates a matrix of size `size`.
+     * If `buffer` is an array, the matrix points to it, instead of creating a new array
+     *
+     * There are no guarantees of the values being initialized.
+     */
+    this.Matrix = function(size, buffer) {
         this.size = size;
-        this.array = new Array(size[0]*size[1]);
+        this.array = buffer || new Array(size[0]*size[1]);
+    }
+
+    /* return a copy of the matrix
+     */
+    this.Matrix.prototype.copy() {
+        c = new THIS.Matrix(this.size, this.array.slice());
+        return c;
+    }
+
+    /*  A matrix of size `size` with ones on the diagonal
+     */
+    this.identity(size) {
+        r = new THIS.Matrix(size);
+        for (i=0; i<size[0]*size[1]; i++)
+            r.array[i] = 0;
+        for (i=0; i<Math.min(size[0],size[1]); i++)
+            r.array[i+size[0]*i] = 1;
+        return r;
     }
 
     this.Matrix.prototype.add(m) {
         if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
                         ') must agree');
-        result = new this.Matrix(this.size)
+        result = new THIS.Matrix(this.size)
         for (i=0; i<(size[0]+size[1]; i++) {
             result.array[i] = this.array[i] + m.array[i]
         }
@@ -38,7 +61,7 @@ var nAn_algebra_module = function() {
         if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
                         ') must agree');
-        result = new this.Matrix(this.size)
+        result = new THIS.Matrix(this.size)
         for (i=0; i<(size[0]+size[1]; i++) {
             result.array[i] = this.array[i] - m.array[i]
         }
@@ -50,7 +73,7 @@ var nAn_algebra_module = function() {
     this.Matrix.prototype.multiply(m) {
         if (this.size[1] != m.size[0]) 
             throw Error("The matrix dimensions don't agree for multiplication");
-        result = new this.Matrix([this.size[0], m.size[1]);
+        result = new THIS.Matrix([this.size[0], m.size[1]);
         for (i=0; i<result.size[0]; i++) {
             for (j=0; j<result.size[1]; j++) {
                 result.array[i+result.size[0]*j] = 0;
@@ -64,7 +87,7 @@ var nAn_algebra_module = function() {
     }
 
     this.Matrix.prototype.transpose(m) {
-        result = new this.Matrix([this.size[1], this.size[0]]);
+        result = new THIS.Matrix([this.size[1], this.size[0]]);
         for (i=0; i<this.size[0]; i++) {
             for (j=0; j<this.size[1]; j++) {
                 result.array[j+result.size[0]*i] = this.array[i+this.size[0]*j];
