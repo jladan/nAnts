@@ -26,12 +26,12 @@ Numerical Analysis Library:
 	Stochastics:
 		- Stochastic solvers for ODE's
 			- Euler-Maruyama (p.161 in stochastics notes) @done(2014-11-10)
-			- Milstein method (p.163 in stoch. notes)
-			- coloured noise, using ornstein-uhlenbeck process (p.164)
+			- Milstein method (p.163 in stoch. notes) @done(2014-11-12)
+			- coloured noise, using ornstein-uhlenbeck process (p.164) @done(2014-11-12)
 		- Create functions for means, variance, etc.
 		- maybe some time-average and ensemble average stuff
 		- Forward gillespie solver could be cool
-		- perhaps higher order stochastic solvers
+		- verify the solvers using ensemble averaging and a known test case.
 
 		RNG's:
 			- Write the Box-Mullar transform for normal distribution @done(2014-11-10)
