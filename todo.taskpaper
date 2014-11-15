@@ -24,10 +24,11 @@ Numerical Analysis Library:
 		- 1D newton 
 	
 	Stochastics:
-		- Stochastic solvers for ODE's
+		- Stochastic solvers for ODE's @done(2014-11-15)
 			- Euler-Maruyama (p.161 in stochastics notes) @done(2014-11-10)
 			- Milstein method (p.163 in stoch. notes) @done(2014-11-12)
 			- coloured noise, using ornstein-uhlenbeck process (p.164) @done(2014-11-12)
+		- Make a "Stochastic problem" object, so that managing them is easier
 		- Create functions for means, variance, etc.
 		- maybe some time-average and ensemble average stuff
 		- Forward gillespie solver could be cool
@@ -46,9 +47,16 @@ Numerical Analysis Library:
 		- Leap Frog @done(2014-11-05)
 		- generic linear multistep
 		- Runge-kutta 45 and 23 ftw
+		- Make an IVP object, for easier handling of demos and models
 	
 	PDE Solvers:
 		The intention is for simple 1D problems (Burgers eq'n, etc)
 		- Finite difference 
 		- Finite Volume
 		- DG methods
+	
+	Plotting Tools:
+		- Require flot and jQsuery
+		- Look into using D3 instead of flot
+		- Add some way of controlling axes and colours
+		- default to adding curves instead of clearing them
