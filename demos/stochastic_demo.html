@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Compare models</title>
+    <script type="text/javascript" src="../flot/jquery.js"></script>
+    <script type="text/javascript" src="../flot/jquery.flot.js"></script>
+    <script type="text/javascript" src="../lib/stochastics.js"></script>
+    <script type="text/javascript">
+        nAn_stochastics_module.apply(this);
+    </script>
+    <style>
+    #plotarea {
+        width:45%;
+        height:400px;
+    } 
+    .controls {}
+
+    main {
+        display: flex;
+    }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>Test out the stochastic solvers</h1>
+        <p> A description of the stochastic system, and this model can be put here</p>
+        <!-- Put the description of the system and tool here -->
+    </div>
+
+    <main>
+        <div class="controls">
+            <!-- Put the form to adjust parameters here -->
+            <form>
+                <fieldset>
+                    <legend>Non-Stochastic Parameters</legend>
+                    <p>
+                        <input id="pA" type="number" value="1" />
+                        <label for="pA">Sort of like speed or frequency</label>
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Stochastic Parameters</legend>
+                    <p>
+                        <input id="pD" type="number" value="0.1" />
+                        <label for="pD">Amount of Brownian motion</label>
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Numerical Scheme</legend>
+                    <p>
+                        <select id="sim-select">
+                            <option value="euler">Euler-Maruyama</option>
+                            <option value="milstein">Milstein</option>
+                            <option value="colour">Coloured Noise</option>
+                        </select>
+                        <label for="sim-select">Simulation Method</label>
+                    </p>
+                    <p>
+                        <input id="time-correlation" type="number" value="0.01" />
+                        <label for="time-correlation">Time correlation</label>
+                    </p>
+                    <p>
+                        <input id="dt" type="number" value=".01" />
+                        <label for="dt">Time-step</label>
+                    </p>
+                    <p>
+                        <input id="t-final" type="number" value="40" />
+                        <label for="t-final">Final Time</label>
+                    </p>
+                    <p>
+                        <input id="x0" type="number" value=".1" />
+                        <label for="x0">Initial X position</label>
+                    </p>
+                    <p>
+                        <input id="y0" type="number" value=".1" />
+                        <label for="y0">Initial Y position</label>
+                    </p>
+                </fieldset>
+                
+            </form>
+            <button id="run-button">Run Simulation</button>
+        </div>
+        <div id="plotarea"></div>
+    </main>
+
+</body>
+<script type="text/javascript">
+
+    var dorbit = function (x,t,c) {
+        return [ c[0] * x[1], 
+                 c[0] * (x[0]-x[0]*x[0]*x[0])];
+    }
+    
+    var dwell = function (x,t,c) {
+        return [ c[0] * (x[0] - x[0]*x[0]*x[0]),
+                 - c[0] * (x[1])];
+    }
+
+    var dconstant = function (x,t,c) {
+        return [ c[0], 
+                 c[0]];
+    }
+    
+    var plot_phase = function (sol) {
+        t = sol[0];
+        N = t.length;
+        x = sol[1].subarray(0,N);
+        y = sol[1].subarray(N,2*N);
+        d = [];
+        for (i=0; i<N; i++) {
+            d[i] = [ x[i],y[i] ];
+        }
+        $.plot("#plotarea",[d]);
+    }
+
+    var dt, t_final, pa, pd, x0, y0, tcorr, sol;
+
+    var runSimulation = function () {
+        dt = document.getElementById("dt").valueAsNumber;
+        t_final = document.getElementById("t-final").valueAsNumber;
+        pa = document.getElementById("pA").valueAsNumber;
+        pd = document.getElementById("pD").valueAsNumber;
+        x0 = document.getElementById("x0").valueAsNumber;
+        y0 = document.getElementById("y0").valueAsNumber;
+        tcorr = document.getElementById("time-correlation").valueAsNumber;
+        var method = document.getElementById("sim-select").value;
+        if (method === 'euler')
+            sol = euler(dorbit, dconstant, [x0, y0], dt, t_final, [pa], [pd]);
+        else if (method === 'milstein')
+            sol = euler(dorbit, dconstant, [x0, y0], dt, t_final, [pa], [pd]);
+        else
+            sol = colour(dorbit, dconstant, 1, tcorr, [x0, y0], dt, t_final, [pa], [pd]);
+        plot_phase(sol)
+    };
+
+    document.getElementById('run-button').onclick = runSimulation;
+    
+</script>
+
+</html>
