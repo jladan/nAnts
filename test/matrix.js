@@ -46,12 +46,14 @@ describe('Matrix', function () {
             var size = 3;
             var m = new algebra.identity(size);
             m.size.should.eql([size,size]);
+            m.array.length.should.eql(size*size);
         });
 
         it('should make the correct size', function (){
             var size = [3,3];
             var m = new algebra.identity(size);
             m.size.should.eql(size);
+            m.array.length.should.eql(size[0]*size[1]);
         });
 
         it('should return an identity matrix', function () {
@@ -180,4 +182,31 @@ describe('Matrix', function () {
         });
     });
 
+    describe('#solve', function () {
+
+        it('should work when used with the identity matrix', function () {
+            var x = new algebra.identity(b.size[0]).solve(b);
+            x.should.eql(b);
+        });
+
+        it('should solve a general matrix', function () {
+            var A = algebra.random([4,4]);
+            var x = new algebra.Matrix([4,1], [1,1,1,1]);
+            var b = A.multiply(x);
+            A.solve(b).should.eql(x);
+        });
+        
+        it("should throw an error if matrix isn't square", function () {
+            B.solve.bind(B,b).should.throw();
+        });
+
+        it("should throw an error if dimensions don't match", function () {
+            var x = new algebra.Matrix([4,1])
+            A.solve.bind(A,x).should.throw();
+        });
+
+        it("should throw an error if b is not a vector", function () {
+            A.solve.bind(A,A).should.throw();
+        });
+    });
 });
