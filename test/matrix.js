@@ -10,6 +10,7 @@ describe('Matrix', function () {
     var At = new algebra.Matrix([3,3],[1,4,7,2,5,8,3,6,9]);
     var Bt = new algebra.Matrix([1,3],[2,1,3]);
 
+
     describe('#Creation', function () {
 
         it('should use the provided array as a buffer', function () {
@@ -119,6 +120,63 @@ describe('Matrix', function () {
 
         it('should move the elements properly (rectangular)', function () {
             B.transpose().should.eql(Bt);
+        });
+    });
+
+    var b = new algebra.Matrix([3,1],[3,2,1]);
+    var b2 = new algebra.Matrix([3,1], [6,11,9]);
+
+    describe('#utSolve', function () {
+
+        it('should work when used with the identity matrix', function () {
+            var x = new algebra.identity(b.size[0]).utSolve(b);
+            x.should.eql(b);
+        });
+
+        it('should solve the upper part of a general matrix', function () {
+            var x = new algebra.Matrix([3,1],[1,1,1]);
+            A.utSolve(b2).should.eql(x);
+        });
+        
+        it("should throw an error if matrix isn't square", function () {
+            B.utSolve.bind(B,b).should.throw();
+        });
+
+        it("should throw an error if dimensions don't match", function () {
+            var x = new algebra.Matrix([4,1])
+            A.utSolve.bind(A,x).should.throw();
+        });
+
+        it("should throw an error if b is not a vector", function () {
+            A.utSolve.bind(A,A).should.throw();
+        });
+    });
+    
+    var b3 = new algebra.Matrix([3,1],[1,5,16]);
+
+    describe('#ltSolve', function () {
+
+        it('should work when used with the identity matrix', function () {
+            var x = new algebra.identity(b.size[0]).ltSolve(b);
+            x.should.eql(b);
+        });
+
+        it('should solve the lower part of a general matrix', function () {
+            var x = new algebra.Matrix([3,1],[1,1,1]);
+            A.ltSolve(b3).should.eql(x);
+        });
+        
+        it("should throw an error if matrix isn't square", function () {
+            B.ltSolve.bind(B,b).should.throw();
+        });
+
+        it("should throw an error if dimensions don't match", function () {
+            var x = new algebra.Matrix([4,1])
+            A.ltSolve.bind(A,x).should.throw();
+        });
+
+        it("should throw an error if b is not a vector", function () {
+            A.ltSolve.bind(A,A).should.throw();
         });
     });
 
