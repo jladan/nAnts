@@ -11,10 +11,10 @@ Numerical Analysis Library:
 		- code up matrix-vector @done(2014-11-06)
 		- code up matrix-multiply @done(2014-11-06)
 		- Transpose matrix @done(2014-11-06)
-		- Decide on column-major vs. row-major
-			It may be easier to do row-swapping for pivoting.
 		- Matrix inversion
-		- LU Decomposition
+		- Add support for matrices in forward and backward solve.
+		- LU Decomposition @done(2014-12-01)
+		- Add partial pivoting to LU decomposition
 		- QR decomposition
 	
 	Root-Finding:
