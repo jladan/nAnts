@@ -19,10 +19,10 @@ Numerical Analysis Library:
 		- code up matrix-vector @done(2014-11-06)
 		- code up matrix-multiply @done(2014-11-06)
 		- Transpose matrix @done(2014-11-06)
-		- Decide on column-major vs. row-major
-			It may be easier to do row-swapping for pivoting.
 		- Matrix inversion
-		- LU Decomposition
+		- Add support for matrices in forward and backward solve.
+		- LU Decomposition @done(2014-12-01)
+		- Add partial pivoting to LU decomposition
 		- QR decomposition
 	
 	Root-Finding:
@@ -32,22 +32,39 @@ Numerical Analysis Library:
 		- 1D newton 
 	
 	Stochastics:
-		- Stochastic solvers for ODE's
+		- Stochastic solvers for ODE's @done(2014-11-15)
+			- Euler-Maruyama (p.161 in stochastics notes) @done(2014-11-10)
+			- Milstein method (p.163 in stoch. notes) @done(2014-11-12)
+			- coloured noise, using ornstein-uhlenbeck process (p.164) @done(2014-11-12)
+		- Make a "Stochastic problem" object, so that managing them is easier
 		- Create functions for means, variance, etc.
 		- maybe some time-average and ensemble average stuff
 		- Forward gillespie solver could be cool
-		- perhaps higher order stochastic solvers
+		- verify the solvers using ensemble averaging and a known test case.
+
+		RNG's:
+			- Write the Box-Mullar transform for normal distribution @done(2014-11-10)
+			- Write the Ziggurat transform for normal (and maybe others)
+			- Compare the performance of all of the distributions.
+			- Our own pseudo RNG so the seed can be controlled (and decently random distribution assured)
+				Math.random() is a different algorithm on different browsers, and generally LCG
 
 
 	ODE Solvers:
-		- Add options for intrinsic and extrinsic noise
 		- Explicit Runge-Kutta fixed order
 		- Leap Frog @done(2014-11-05)
 		- generic linear multistep
 		- Runge-kutta 45 and 23 ftw
+		- Make an IVP object, for easier handling of demos and models
 	
 	PDE Solvers:
 		The intention is for simple 1D problems (Burgers eq'n, etc)
 		- Finite difference 
 		- Finite Volume
 		- DG methods
+	
+	Plotting Tools:
+		- Require flot and jQsuery
+		- Look into using D3 instead of flot
+		- Add some way of controlling axes and colours
+		- default to adding curves instead of clearing them

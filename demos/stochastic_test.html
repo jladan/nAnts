@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Compare models</title>
+    <script type="text/javascript" src="../flot/jquery.js"></script>
+    <script type="text/javascript" src="../flot/jquery.flot.js"></script>
+    <script type="text/javascript" src="../lib/stochastics.js"></script>
+    <script type="text/javascript">
+        nAn_stochastics_module.apply(this);
+    </script>
+</head>
+<body>
+    <h1>Test out the stochastic solvers</h1>
+    <div>
+        <div id="plotarea" style="width:45%;height:400px;display:inline-block;"></div>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    var t, N, x, y, xdot, d;
+
+    var plot_trail = function (sol1,index) {
+        t = sol1[0];
+        N = sol1[2];
+        var k = index || 0;
+        x = sol1[1].subarray(k*N, (k+1)*N);
+        d = []; 
+        for (i = 0; i < N; i++) {
+            d[i] = [t[i], x[i]];
+        }
+        $.plot("#plotarea", [d]);
+    }
+
+    var plot_phase = function (sol) {
+        t = sol[0];
+        N = t.length;
+        x = sol[1].subarray(0,N);
+        y = sol[1].subarray(N,2*N);
+        d = [];
+        for (i=0; i<N; i++) {
+            d[i] = [ x[i],y[i] ];
+        }
+        $.plot("#plotarea",[d]);
+    }
+
+</script>
+
+</html>
