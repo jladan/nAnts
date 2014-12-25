@@ -2,6 +2,9 @@
  *
  * usage: nAn_stochastics_module.apply(namespace);
  */
+
+define("nan/stochastics", [], function () {
+
 var nAn_stochastics_module = function() {
 
     var THIS=this;
@@ -189,3 +192,9 @@ var nAn_stochastics_module = function() {
     this.gaussian = this.boxMuller;
 
 };
+
+var m = {};
+nAn_stochastics_module.apply(m);
+return m;
+
+});

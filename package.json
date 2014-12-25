@@ -1,19 +1,19 @@
 {
-    "name": "nAn",
-    "version": "0.1.0",
-    "author": "John Ladan",
-
-    "devDependencies": {
-        "mocha": "*",
-        "should": ">=0.0.1"
-    },
-
-    "scripts": {
-        "test": "mocha"
-    },
-
-    "modules": {
-        "algebra": "lib/algebra.js",
-        "ode": "lib/ode.js"
-    }
+  "name": "nAn",
+  "version": "0.1.0",
+  "author": "John Ladan",
+  "devDependencies": {
+    "mocha": "2.0.x",
+    "should": "4.2.x"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "modules": {
+    "algebra": "lib/algebra.js",
+    "ode": "lib/ode.js"
+  },
+  "dependencies": {
+    "requirejs": "^2.1.15"
+  }
 }

@@ -1,5 +1,6 @@
 
-/* Usage: NumericODE_modeule.apply(namespace) */
+define("nan/ode", [], function () {
+
 var nAn_ode_module = function() {
 
     /* forward euler solver to test design
@@ -121,6 +122,10 @@ var nAn_ode_module = function() {
         }
         return [t, result, N];
     }
-
-
 };
+
+var m = {};
+nAn_ode_module.apply(m);
+return m;
+
+});

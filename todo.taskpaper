@@ -3,17 +3,16 @@ Verification:
 
 Code Organization:
 	- nAn is a good name, but not unique. Come up with a new name
+	- convert to requireJS
+	- use npm for dependencies like flow
+	- create a new project for front-end interface and simulations
+	- set up the package.json to use 0.4.x or 1.x.x style versions
 
 Numerical Analysis Library:
 
 	Linear Algebra:
-		- Create basic matrix object @done(2014-11-06)
-		- code up matrix-vector @done(2014-11-06)
-		- code up matrix-multiply @done(2014-11-06)
-		- Transpose matrix @done(2014-11-06)
 		- Matrix inversion
 		- Add support for matrices in forward and backward solve.
-		- LU Decomposition @done(2014-12-01)
 		- Add partial pivoting to LU decomposition
 		- QR decomposition
 	
@@ -24,10 +23,6 @@ Numerical Analysis Library:
 		- 1D newton 
 	
 	Stochastics:
-		- Stochastic solvers for ODE's @done(2014-11-15)
-			- Euler-Maruyama (p.161 in stochastics notes) @done(2014-11-10)
-			- Milstein method (p.163 in stoch. notes) @done(2014-11-12)
-			- coloured noise, using ornstein-uhlenbeck process (p.164) @done(2014-11-12)
 		- Make a "Stochastic problem" object, so that managing them is easier
 		- Create functions for means, variance, etc.
 		- maybe some time-average and ensemble average stuff
@@ -35,7 +30,6 @@ Numerical Analysis Library:
 		- verify the solvers using ensemble averaging and a known test case.
 
 		RNG's:
-			- Write the Box-Mullar transform for normal distribution @done(2014-11-10)
 			- Write the Ziggurat transform for normal (and maybe others)
 			- Compare the performance of all of the distributions.
 			- Our own pseudo RNG so the seed can be controlled (and decently random distribution assured)
@@ -44,7 +38,6 @@ Numerical Analysis Library:
 
 	ODE Solvers:
 		- Explicit Runge-Kutta fixed order
-		- Leap Frog @done(2014-11-05)
 		- generic linear multistep
 		- Runge-kutta 45 and 23 ftw
 		- Make an IVP object, for easier handling of demos and models
@@ -60,3 +53,15 @@ Numerical Analysis Library:
 		- Look into using D3 instead of flot
 		- Add some way of controlling axes and colours
 		- default to adding curves instead of clearing them
+Archive:
+	- Create basic matrix object @done(2014-11-06) @project(Numerical Analysis Library / Linear Algebra)
+	- code up matrix-vector @done(2014-11-06) @project(Numerical Analysis Library / Linear Algebra)
+	- code up matrix-multiply @done(2014-11-06) @project(Numerical Analysis Library / Linear Algebra)
+	- Transpose matrix @done(2014-11-06) @project(Numerical Analysis Library / Linear Algebra)
+	- LU Decomposition @done(2014-12-01) @project(Numerical Analysis Library / Linear Algebra)
+	- Stochastic solvers for ODE's @done(2014-11-15) @project(Numerical Analysis Library / Stochastics)
+		- Euler-Maruyama (p.161 in stochastics notes) @done(2014-11-10)
+		- Milstein method (p.163 in stoch. notes) @done(2014-11-12)
+		- coloured noise, using ornstein-uhlenbeck process (p.164) @done(2014-11-12)
+	- Write the Box-Mullar transform for normal distribution @done(2014-11-10) @project(Numerical Analysis Library / Stochastics / RNG's)
+	- Leap Frog @done(2014-11-05) @project(Numerical Analysis Library / ODE Solvers)
