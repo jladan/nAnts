@@ -11,7 +11,7 @@
 */
 
 
-define("nan/matrix", [], function() {
+define('algebra', [], function() {
 
     var nanAlgebra = {};
 
@@ -23,21 +23,21 @@ define("nan/matrix", [], function() {
      * There are no guarantees of the values being initialized.
      * The matrix is in row-major format (because of row-pivoting)
      */
-    nanAlgrebra.Matrix = function(size, buffer) {
+    nanAlgebra.Matrix = function(size, buffer) {
         this.size = size.slice();
         this.array = buffer || new Array(size[0]*size[1]);
     }
 
     /* return a copy of the matrix
      */
-    nanAlgrebra.Matrix.prototype.copy = function () {
+    nanAlgebra.Matrix.prototype.copy = function () {
         c = new nanAlgebra.Matrix(this.size, this.array.slice());
         return c;
     }
 
     /*  A matrix of size `size` with ones on the diagonal
      */
-    nanAlgrebra.identity = function (size) {
+    nanAlgebra.identity = function (size) {
         var s,r;
         (size.constructor === Array) ? s=size : s=[size,size];
         r = new nanAlgebra.Matrix(s);
@@ -50,7 +50,7 @@ define("nan/matrix", [], function() {
 
     /* A matrix of size `size` filled with random entries
      */
-    nanAlgrebra.random = function (size) {
+    nanAlgebra.random = function (size) {
         var r = new nanAlgebra.Matrix(size);
         for (i=0; i<size[0]*size[1]; i++)
             r.array[i] = Math.random();
@@ -59,7 +59,7 @@ define("nan/matrix", [], function() {
 
     /* Return the sum of two matrices
      */
-    nanAlgrebra.Matrix.prototype.add = function (m) {
+    nanAlgebra.Matrix.prototype.add = function (m) {
         if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
                         ') must agree');
@@ -72,7 +72,7 @@ define("nan/matrix", [], function() {
     
     /* Return the difference of two matrices
      */
-    nanAlgrebra.Matrix.prototype.subtract = function (m) {
+    nanAlgebra.Matrix.prototype.subtract = function (m) {
         if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
                         ') must agree');
@@ -85,7 +85,7 @@ define("nan/matrix", [], function() {
 
     /* Multiply the matrix on the *right* by m */
     // TODO: profile this code
-    nanAlgrebra.Matrix.prototype.multiply = function (m) {
+    nanAlgebra.Matrix.prototype.multiply = function (m) {
         if (this.size[1] != m.size[0]) 
             throw Error("The matrix dimensions don't agree for multiplication");
         result = new nanAlgebra.Matrix([this.size[0], m.size[1]]);
@@ -103,7 +103,7 @@ define("nan/matrix", [], function() {
 
     /* transpose a matrix
      */
-    nanAlgrebra.Matrix.prototype.transpose = function (m) {
+    nanAlgebra.Matrix.prototype.transpose = function (m) {
         result = new nanAlgebra.Matrix([this.size[1], this.size[0]]);
         for (i=0; i<this.size[0]; i++) {
             for (j=0; j<this.size[1]; j++) {
@@ -120,7 +120,7 @@ define("nan/matrix", [], function() {
      * thrown if a non-zero element is below the diagonal. This makes it
      * possible to use on an LU decomposition that's stored in a single matrix.
      */
-    nanAlgrebra.Matrix.prototype.utSolve = function (b) {
+    nanAlgebra.Matrix.prototype.utSolve = function (b) {
         if (this.size[0] != this.size[1])
             throw new Error('Matrix must be square');
         if (this.size[1] != b.size[0]) 
@@ -151,7 +151,7 @@ define("nan/matrix", [], function() {
      * Because it's designed to be used for LU decomposion, it is assumed that
      * the diagonal elements are all one.
      */
-    nanAlgrebra.Matrix.prototype.ltSolve = function (b) {
+    nanAlgebra.Matrix.prototype.ltSolve = function (b) {
         if (this.size[0] != this.size[1])
             throw new Error('Matrix must be square');
         if (this.size[1] != b.size[0]) 
@@ -177,7 +177,7 @@ define("nan/matrix", [], function() {
      *
      * L is stored below the diagonal.
      */
-    nanAlgrebra.Matrix.prototype.luDecompose = function() {
+    nanAlgebra.Matrix.prototype.luDecompose = function() {
         if (this.size[0] != this.size[1])
             throw new Error('Matrix must be square');
         
@@ -198,7 +198,7 @@ define("nan/matrix", [], function() {
 
     /* Extract L from the LU decomposition
      */
-    nanAlgrebra.Matrix.prototype.grabL = function() {
+    nanAlgebra.Matrix.prototype.grabL = function() {
         var L = this.copy();
 
         var N = L.size[0];
@@ -213,7 +213,7 @@ define("nan/matrix", [], function() {
 
     /* Extract U from the LU decomposition
      */
-    nanAlgrebra.Matrix.prototype.grabU = function() {
+    nanAlgebra.Matrix.prototype.grabU = function() {
         var U = this.copy();
 
         var N = U.size[0];
@@ -230,7 +230,7 @@ define("nan/matrix", [], function() {
      * When the forward and back solves are designed to accept matrices rather
      * than just vectors, this can be used to invert a matrix.
      */
-    nanAlgrebra.Matrix.prototype.solve = function (b) {
+    nanAlgebra.Matrix.prototype.solve = function (b) {
         if (this.size[0] != this.size[1])
             throw new Error('Matrix must be square');
         if (this.size[1] != b.size[0]) 

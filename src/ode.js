@@ -1,5 +1,5 @@
 
-define("nan/ode", [], function () {
+define("ode", [], function () {
 
 var nAn_ode_module = function() {
 

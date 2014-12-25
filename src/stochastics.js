@@ -3,7 +3,7 @@
  * usage: nAn_stochastics_module.apply(namespace);
  */
 
-define("nan/stochastics", [], function () {
+define("stochastics", [], function () {
 
 var nAn_stochastics_module = function() {
 

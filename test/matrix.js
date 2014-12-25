@@ -1,15 +1,37 @@
 'use strict';
-
-var algebra = require('../lib/algebra.js');
+var requirejs = require("requirejs");
+requirejs.config({
+    baseUrl: './src',
+    nodeRequire: require
+});
 
 describe('Matrix', function () {
 
-    var A = new algebra.Matrix([3,3],[1,2,3,4,5,6,7,8,9]);
-    var B = new algebra.Matrix([3,1],[2,1,3]);
-    var AB = new algebra.Matrix([3,1],[13,31,49]);        
-    var At = new algebra.Matrix([3,3],[1,4,7,2,5,8,3,6,9]);
-    var Bt = new algebra.Matrix([1,3],[2,1,3]);
+    var algebra;
+    var A, B, AB, At, Bt;
+    var b, b2, b3;
 
+    var initializeData = function () {
+    }
+
+    before(function (done) {
+        // This saves the module for use in tests
+        // The `done` callback is used, because it's asynchronous
+        requirejs(['algebra'], function(mod) {
+            algebra = mod;
+            console.log("Matrix module loaded");
+            A = new algebra.Matrix([3,3],[1,2,3,4,5,6,7,8,9]);
+            B = new algebra.Matrix([3,1],[2,1,3]);
+            AB = new algebra.Matrix([3,1],[13,31,49]);        
+            At = new algebra.Matrix([3,3],[1,4,7,2,5,8,3,6,9]);
+            Bt = new algebra.Matrix([1,3],[2,1,3]);
+            b = new algebra.Matrix([3,1],[3,2,1]);
+            b2 = new algebra.Matrix([3,1], [6,11,9]);
+            b3 = new algebra.Matrix([3,1],[1,5,16]);
+            done();
+        });
+
+    });
 
     describe('#Creation', function () {
 
@@ -125,8 +147,6 @@ describe('Matrix', function () {
         });
     });
 
-    var b = new algebra.Matrix([3,1],[3,2,1]);
-    var b2 = new algebra.Matrix([3,1], [6,11,9]);
 
     describe('#utSolve', function () {
 
@@ -154,7 +174,6 @@ describe('Matrix', function () {
         });
     });
     
-    var b3 = new algebra.Matrix([3,1],[1,5,16]);
 
     describe('#ltSolve', function () {
 
