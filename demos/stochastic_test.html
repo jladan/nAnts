@@ -6,13 +6,11 @@
     <title>Compare models</title>
     <script type="text/javascript" src="../flot/jquery.js"></script>
     <script type="text/javascript" src="../flot/jquery.flot.js"></script>
-    <script type="text/javascript" src="../lib/stochastics.js"></script>
-    <script type="text/javascript">
-        nAn_stochastics_module.apply(this);
-    </script>
+    <script src="../node_modules/requirejs/require.js"></script>
 </head>
 <body>
     <h1>Test out the stochastic solvers</h1>
+    <p id="status"></p>
     <div>
         <div id="plotarea" style="width:45%;height:400px;display:inline-block;"></div>
     </div>
@@ -46,6 +44,18 @@
         $.plot("#plotarea",[d]);
     }
 
+    // now load the library
+    var stoch;
+
+require.config({
+        baseUrl: '../src/'
+        });
+
+require(['stochastics'], function(s) {
+        stoch = s;
+        var statusLine = document.getElementById('status');
+        statusLine.innerHTML = "Stochastic module is loaded as stoch";
+    });
 </script>
 
 </html>

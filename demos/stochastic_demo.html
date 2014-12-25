@@ -6,10 +6,7 @@
     <title>Compare models</title>
     <script type="text/javascript" src="../flot/jquery.js"></script>
     <script type="text/javascript" src="../flot/jquery.flot.js"></script>
-    <script type="text/javascript" src="../lib/stochastics.js"></script>
-    <script type="text/javascript">
-        nAn_stochastics_module.apply(this);
-    </script>
+    <script src="../node_modules/requirejs/require.js"></script>
     <style>
     #plotarea {
         width:45%;
@@ -87,8 +84,7 @@
     </main>
 
 </body>
-<script type="text/javascript">
-
+<script>
     var dorbit = function (x,t,c) {
         return [ c[0] * x[1], 
                  c[0] * (x[0]-x[0]*x[0]*x[0])];
@@ -115,29 +111,33 @@
         }
         $.plot("#plotarea",[d]);
     }
-
+    var runsimulation;
     var dt, t_final, pa, pd, x0, y0, tcorr, sol;
 
-    var runSimulation = function () {
-        dt = document.getElementById("dt").valueAsNumber;
-        t_final = document.getElementById("t-final").valueAsNumber;
-        pa = document.getElementById("pA").valueAsNumber;
-        pd = document.getElementById("pD").valueAsNumber;
-        x0 = document.getElementById("x0").valueAsNumber;
-        y0 = document.getElementById("y0").valueAsNumber;
-        tcorr = document.getElementById("time-correlation").valueAsNumber;
-        var method = document.getElementById("sim-select").value;
-        if (method === 'euler')
-            sol = euler(dorbit, dconstant, [x0, y0], dt, t_final, [pa], [pd]);
-        else if (method === 'milstein')
-            sol = euler(dorbit, dconstant, [x0, y0], dt, t_final, [pa], [pd]);
-        else
-            sol = colour(dorbit, dconstant, 1, tcorr, [x0, y0], dt, t_final, [pa], [pd]);
-        plot_phase(sol)
-    };
+    require.config({
+            baseUrl: '../src'
+            });
+    require(['stochastics'], function(stoch) {
+        runSimulation = function () {
+            dt = document.getElementById("dt").valueAsNumber;
+            t_final = document.getElementById("t-final").valueAsNumber;
+            pa = document.getElementById("pA").valueAsNumber;
+            pd = document.getElementById("pD").valueAsNumber;
+            x0 = document.getElementById("x0").valueAsNumber;
+            y0 = document.getElementById("y0").valueAsNumber;
+            tcorr = document.getElementById("time-correlation").valueAsNumber;
+            var method = document.getElementById("sim-select").value;
+            if (method === 'euler')
+                sol = stoch.euler(dorbit, dconstant, [x0, y0], dt, t_final, [pa], [pd]);
+            else if (method === 'milstein')
+                sol = stoch.euler(dorbit, dconstant, [x0, y0], dt, t_final, [pa], [pd]);
+            else
+                sol = stoch.colour(dorbit, dconstant, 1, tcorr, [x0, y0], dt, t_final, [pa], [pd]);
+            plot_phase(sol)
+        };
 
-    document.getElementById('run-button').onclick = runSimulation;
-    
+        document.getElementById('run-button').onclick = runSimulation;
+        });
 </script>
 
 </html>

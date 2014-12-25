@@ -4,16 +4,25 @@
 <head>
     <meta charset="utf-8" />
     <title>Compare models</title>
-    <script type="text/javascript" src="../lib/ode.js"></script>
-    <script type="text/javascript" src="../lib/algebra.js"></script>
-    <script type="text/javascript" src="../lib/stochastics.js"></script>
-    <script type="text/javascript">
-        nAn_ode_module.apply(this);
-        nAn_stochastics_module.apply(this);
-        nAn_algebra_module.apply(this);
-    </script>
+    <script src="../node_modules/requirejs/require.js"></script>
 </head>
 <body>
-<h1>Libraries are loaded for use in console</h1>
+<h1 id="status">Libraries are loaded for use in console</h1>
+
+<script>
+var algebra, ode, stoch;
+require.config({
+        baseUrl: '../src/'
+        });
+
+require(['algebra', 'ode', 'stochastics'], function(a,o,s) {
+        algebra = a;
+        ode = o;
+        stoch = s;
+        var statusLine = document.getElementById('status');
+        statusLine.innerHTML = "Modules are loaded as algebra, ode, and stoch";
+    });
+</script>
+
 </body>
 </html>

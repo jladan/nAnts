@@ -6,20 +6,20 @@
     <title>Compare models</title>
     <script type="text/javascript" src="../flot/jquery.js"></script>
     <script type="text/javascript" src="../flot/jquery.flot.js"></script>
-    <script type="text/javascript" src="../lib//ode.js"></script>
-    <script type="text/javascript" src="systems.js"></script>
-    <script type="text/javascript">
-        nAn_ode_module.apply(this);
-        demo_systems_module.apply(this);
-    </script>
+    <script src="../node_modules/requirejs/require.js"></script>
 </head>
 <body>
+    <p id="status"></p>
     <div>
         <div id="plotarea" style="width:45%;height:400px;display:inline-block;"></div>
         <div id="phasearea" style="width:45%;height:400px;display:inline-block;"></div>
     </div>
 
 </body>
+<script type="text/javascript" src="systems.js"></script>
+<script type="text/javascript">
+    demo_systems_module.apply(this);
+</script>
 <script type="text/javascript">
 
     var t, N, x, xdot, d1, d2, d3
@@ -39,6 +39,19 @@
         $.plot("#plotarea", [d1]);
         $.plot("#phasearea", [d3])
     }
+
+    // now load the library
+    var ode;
+
+    require.config({
+            baseUrl: '../src/'
+            });
+
+    require(['ode'], function(s) {
+            ode= s;
+            var statusLine = document.getElementById('status');
+            statusLine.innerHTML = "Stochastic module is loaded as ode";
+        });
 </script>
 
 </html>
