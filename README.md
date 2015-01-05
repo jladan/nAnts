@@ -1,5 +1,3 @@
-nAnjs - the *n*umerical *An*alysis Javascript library
-
 # Introduction
 
 nAnjs is a library providing the tools for numerical analysis in the browser 100% clientside. The primary goal is to perform accurate and efficient mathematical simulations in the browser, without requiring any additional libraries. This is not a large-scale numerical analysis library, so don't expect to use it for large, high-dimensional problems.
@@ -28,11 +26,3 @@ This module also includes a Gaussian random number generator.
 
 ## nAn\_algebra\_module
 A module for real-valued matrix algebra.
-
-# History
-
-In fall of 2014, I was asked to make an interactive website to demonstrate dynamical systems. The idea was to provide a playground for people with no past experience with mathematical models or programming, allowing them to change parameters, and immediately see how different models behave.
-
-We decided to do all calculations client-side, because the book-keeking and data management would be much simpler, and to reduce load on the server.
-
-After a search for existing libraries, no suitable choice was found. None had the desired ODE solvers, and all of the matrix calculations were very basic, using arrays of arrays, rather than the more performant flat arrays. Hence, the creation of nAnjs.
