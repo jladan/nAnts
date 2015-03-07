@@ -3,11 +3,7 @@
  * usage: nAn_stochastics_module.apply(namespace);
  */
 
-define("stochastics", [], function () {
-
-var nAn_stochastics_module = function() {
-
-    var THIS=this;
+module stochastics {
 
     /* Euler-Maruyama method
      *
@@ -24,7 +20,7 @@ var nAn_stochastics_module = function() {
      * parameters - array of parameters to be sent to the functions A,D
      * the rest should be self-explanatory
      */
-    this.euler = function (A, D, initial, dt, t_final, pA,pD) {
+    export function euler(A, D, initial, dt, t_final, pA,pD) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
@@ -33,6 +29,7 @@ var nAn_stochastics_module = function() {
         var sdt = Math.sqrt(dt);
 
         // initial conditions
+        var i, j, n:number;
         var y_cur = initial.slice();
         for (j = 0; j < d; j++) result[j * N] = initial[j];
         // the grunt-work!
@@ -40,14 +37,14 @@ var nAn_stochastics_module = function() {
             var A_cur = A(y_cur, t[i], pA)
             var D_cur = D(y_cur, t[i], pD)
             t[i+1] = (i+1) * dt;
-            n = THIS.gaussian();
+            n = gaussian();
             for (j = 0; j < d; j++) 
                 result[i + 1 + j * N] = y_cur[j] = 
                     y_cur[j] + dt * A_cur[j] + 
                         n*D_cur[j]*sdt;
         }
         return [t, result, N];
-    };
+    }
 
     /* Milstein method
      *
@@ -65,15 +62,15 @@ var nAn_stochastics_module = function() {
      * parameters - array of parameters to be sent to the functions A,D
      * the rest should be self-explanatory
      */
-    this.milstein = function (A, D, Dy, initial, dt, t_final, pA,pD) {
+    export function milstein(A, D, Dy, initial, dt, t_final, pA,pD) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
         var t = new Float32Array(N);
-        var n = 4; // the most random number
         var sdt = Math.sqrt(dt);
 
         // initial conditions
+        var i, j, n:number[];
         var y_cur = initial.slice();
         for (j = 0; j < d; j++) result[j * N] = initial[j];
         // the grunt-work!
@@ -82,14 +79,14 @@ var nAn_stochastics_module = function() {
             var D_cur = D(y_cur, t[i], pD)
             var Dy_cur = Dy(y_cur, t[i], pD)
             t[i+1] = (i+1) * dt;
-            n = THIS.boxMuller2();
+            n = boxMuller2();
             for (j = 0; j < d; j++) 
                 result[i + 1 + j * N] = y_cur[j] = 
                     y_cur[j] + dt * A_cur[j] + n[0]*D_cur[j]*sdt
                     - dt/2*D_cur[j]*Dy_cur[j]*(1-n[1]*n[1]);
         }
         return [t, result, N];
-    };
+    }
 
     /* Coloured Noise method
      *
@@ -115,7 +112,7 @@ var nAn_stochastics_module = function() {
      * parameters - array of parameters to be sent to the functions A,D
      * the rest should be self-explanatory
      */
-    this.colour = function (A, D, sigma, tau, initial, dt, t_final, pA, pD) {
+    export function colour(A, D, sigma, tau, initial, dt, t_final, pA, pD) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
@@ -128,13 +125,14 @@ var nAn_stochastics_module = function() {
         var rhoc = sigma*Math.sqrt(1-rho*rho);
 
         // initial conditions
+        var i: number, j: number;
         var y_cur = initial.slice();
         for (j = 0; j < d; j++) result[j * N] = initial[j];
         var k1=new Array(d), k2=new Array(d);
         var y_next = y_cur.slice();
         for (i = 0; i < N-1; i++) {
             // advance the noise and time
-            n = THIS.boxMuller();
+            n = boxMuller();
             t[i+1] = (i+1) * dt;
             noise[i+1] = noise[i] *rho + n*rhoc;
             // use heun's method to advance the system
@@ -158,7 +156,7 @@ var nAn_stochastics_module = function() {
 
     /* The Box Muller transform 
      */
-    this.boxMuller = function() {
+    export function boxMuller() : number {
         var v1, v2, s, x;
         do {
             var u1 = Math.random();
@@ -174,8 +172,8 @@ var nAn_stochastics_module = function() {
     
     /* Box Muller function that returns both Gaussians
      */
-    boxMuller2 = function() {
-        var v1, v2, s, x;
+    export function boxMuller2() : number[] {
+        var v1, v2, s, x, y;
         do {
             var u1 = Math.random();
             var u2 = Math.random();
@@ -189,12 +187,6 @@ var nAn_stochastics_module = function() {
         return [x,y];
     };
     
-    this.gaussian = this.boxMuller;
+    export var gaussian = boxMuller;
 
 };
-
-var m = {};
-nAn_stochastics_module.apply(m);
-return m;
-
-});

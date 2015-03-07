@@ -1,8 +1,5 @@
 
-define("ode", [], function () {
-
-var nAn_ode_module = function() {
-
+module ode {
     /* forward euler solver to test design
      * 
      * The dimension `d` is determined from the `initial` argument
@@ -13,13 +10,14 @@ var nAn_ode_module = function() {
      * t_final is the total time
      * parameters is an array of the parameters for the ODE being solved
      */
-    this.forward_euler = function (derivative, initial, dt, t_final, parameters) {
+    function forward_euler(derivative, initial, dt, t_final, parameters) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
         var t = new Float32Array(N);
 
         // initial conditions
+        var i, j;
         var x_cur = initial;
         for (j = 0; j < d; j++) result[j * N] = initial[j];
         // the grunt-work!
@@ -32,13 +30,14 @@ var nAn_ode_module = function() {
         return [t, result, N];
     }
 
-    this.leap_frog = function (derivative, initial, dt, t_final, parameters) {
+    function leap_frog(derivative, initial, dt, t_final, parameters) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
         var t = new Float32Array(N);
 
         // initial conditions
+        var i, j;
         for (j = 0; j < d; j++) result[j * N] = initial[j];
         // Forward Euler for the first time-step
         var x_old = initial.slice();
@@ -62,13 +61,14 @@ var nAn_ode_module = function() {
         return [t, result, N];
     }
     
-    this.ab2 = function (derivative, initial, dt, t_final, parameters) {
+    function ab2 (derivative, initial, dt, t_final, parameters) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
         var t = new Float32Array(N);
 
         // initial conditions
+        var i, j;
         for (j = 0; j < d; j++) result[j * N] = initial[j];
         // Forward Euler for the first time-step
         var x_old = initial.slice();
@@ -95,13 +95,14 @@ var nAn_ode_module = function() {
         return [t, result, N];
     }
 
-    this.heun = function (derivative, initial, dt, t_final, parameters) {
+    function heun (derivative, initial, dt, t_final, parameters) {
         var d = initial.length;
         var N = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
         var t = new Float32Array(N);
 
         // initial conditions
+        var i, j;
         var x_cur = initial.slice();
         for (j = 0; j < d; j++) result[j * N] = x_cur[j];
         var x_new=x_cur.slice(), x_next=x_cur.slice();
@@ -122,10 +123,4 @@ var nAn_ode_module = function() {
         }
         return [t, result, N];
     }
-};
-
-var m = {};
-nAn_ode_module.apply(m);
-return m;
-
-});
+}
