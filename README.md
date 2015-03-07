@@ -1,6 +1,6 @@
 # Introduction
 
-nAnjs is a library providing the tools for numerical analysis in the browser 100% clientside. The primary goal is to perform accurate and efficient mathematical simulations in the browser, without requiring any additional libraries. This is not a large-scale numerical analysis library, so don't expect to use it for large, high-dimensional problems.
+A rewrite of nAnjs using typescript. Hooray for static checking!
 
 # Features
 
@@ -8,14 +8,14 @@ Performance is attained by using flat arrays for all multidimensional matrix man
 
 The various tools are split into modules based on problem type
 
-## nAn\_ODE\_module
+## ODE module
 Numerical solvers for ODE's of the form *x*'(t)=*F*(*x*,t). Methods available include
 
 * Improved Forward Euler (aka. Heun's Method or 2-step Runge-Kutta).
 * Adams-Bashford (2-step).
 * Leap-frog (central difference time-stepping).
 
-## nAn\_stochastics\_module
+## stochastics module
 Numerical solvers for Stochastic differential equations of the form d*x*(t)=*A*(*X*,t)dt + B(*X*,t) n(t)dt. Where n(t) is some kind of noise. Methods available include
 
 * Euler-Maruyama (Gaussian white noise)
@@ -24,5 +24,5 @@ Numerical solvers for Stochastic differential equations of the form d*x*(t)=*A*(
 
 This module also includes a Gaussian random number generator.
 
-## nAn\_algebra\_module
+## Matric Algebra module
 A module for real-valued matrix algebra.
