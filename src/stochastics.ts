@@ -5,6 +5,32 @@
 
 module stochastics {
 
+    export class Solution {
+        t: Float32Array | Float64Array;
+        result: Float32Array | Float64Array;
+        N: number;
+
+        constructor(t, result, n) {
+            this.t = t;
+            this.N = n;
+            this.result = result;
+        }
+
+        // Helper functions
+        get_dimension(d: number): Float32Array | Float64Array {
+            return this.result.subarray(d * this.N,(d + 1) * this.N);
+        }
+
+        get_trail(d: number) {
+            var x = this.get_dimension(d);
+            var i: number;
+            var result: Array<[number,number]> = new Array();
+            for (i = 0; i < this.N; i++)
+                result.push([this.t[i], x[i]]);
+            return result;
+        }
+
+    }
     /* Euler-Maruyama method
      *
      * Numerically simulates the Langevin equation,
@@ -23,7 +49,7 @@ module stochastics {
     export function euler(A: (x: number[], t: number, p: number[]) => number[],
                           D: (x: number[], t: number, p: number[]) => number[],
                           initial: number[], dt: number, t_final: number,
-                          pA: number[], pD: number[]) {
+                          pA: number[], pD: number[]): Solution {
         var d: number = initial.length;
         var N: number = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
@@ -46,7 +72,7 @@ module stochastics {
                     y_cur[j] + dt * A_cur[j] +
                     n * D_cur[j] * sdt;
         }
-        return [t, result, N];
+        return new Solution(t, result, N);
     }
 
     /* Milstein method
@@ -69,7 +95,7 @@ module stochastics {
                              D: (x: number[], t: number, p: number[]) => number[],
                              Dy: (x: number[], t: number, p: number[]) => number[],
                              initial: number[], dt: number, t_final: number,
-                             pA: number[], pD: number[]) {
+                             pA: number[], pD: number[]): Solution {
         var d: number = initial.length;
         var N: number = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
@@ -92,7 +118,7 @@ module stochastics {
                     y_cur[j] + dt * A_cur[j] + n[0] * D_cur[j] * sdt
                     - dt / 2 * D_cur[j] * Dy_cur[j] * (1 - n[1] * n[1]);
         }
-        return [t, result, N];
+        return new Solution(t, result, N);
     }
 
     /* Coloured Noise method
@@ -123,7 +149,7 @@ module stochastics {
                            D: (x: number[], t: number, p: number[]) => number[],
                            sigma: number, tau: number,
                            initial: number[], dt: number, t_final: number,
-                           pA: number[], pD: number[]): [Float32Array, Float32Array, number]{
+                           pA: number[], pD: number[]): Solution {
         var d: number = initial.length;
         var N: number = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
@@ -161,7 +187,7 @@ module stochastics {
                 y_cur[j] + dt / 2 * (k1[j] + k2[j]);
             }
         }
-        return [t, result, N];
+        return new Solution(t, result, N);
     };
     
 
