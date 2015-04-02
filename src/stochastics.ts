@@ -1,6 +1,4 @@
-/* nAnjs stochastic simulation module
- *
- * usage: nAn_stochastics_module.apply(namespace);
+/** nAnts stochastic simulation module
  */
 
 module stochastics {
@@ -31,7 +29,8 @@ module stochastics {
         }
 
     }
-    /* Euler-Maruyama method
+
+    /** Euler-Maruyama method
      *
      * Numerically simulates the Langevin equation,
      *
@@ -75,7 +74,7 @@ module stochastics {
         return new Solution(t, result, N);
     }
 
-    /* Milstein method
+    /** Milstein method
      *
      * Numerically simulates the Langevin equation,
      *
@@ -121,7 +120,7 @@ module stochastics {
         return new Solution(t, result, N);
     }
 
-    /* Coloured Noise method
+    /** Coloured Noise method
      *
      * Numerically simulates the Langevin equation,
      *
@@ -188,10 +187,10 @@ module stochastics {
             }
         }
         return new Solution(t, result, N);
-    };
+    }
     
 
-    /* The Box Muller transform 
+    /** The Box Muller transform 
      */
     export function boxMuller() : number {
         var v1: number, v2: number, s: number, x: number;
@@ -205,9 +204,9 @@ module stochastics {
 
         x = Math.sqrt( -2*Math.log(s)/s)*v1;
         return x;
-    };
+    }
     
-    /* Box Muller function that returns both Gaussians
+    /** Box Muller function that returns both Gaussians
      */
     export function boxMuller2() : number[] {
         var v1, v2, s, x, y;
@@ -222,7 +221,7 @@ module stochastics {
         x = Math.sqrt( -2*Math.log(s)/s)*v1;
         y = Math.sqrt( -2*Math.log(s)/s)*v2;
         return [x,y];
-    };
+    }
     
     export var gaussian = boxMuller;
 
