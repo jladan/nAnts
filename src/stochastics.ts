@@ -3,6 +3,7 @@
 
 module stochastics {
 
+    export enum Method {Euler, Milstein, Colour};
     export class Solution {
         t: Float32Array | Float64Array;
         result: Float32Array | Float64Array;
