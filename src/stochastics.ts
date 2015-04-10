@@ -15,16 +15,26 @@ module stochastics {
         }
 
         // Helper functions
-        get_dimension(d: number): Float32Array | Float64Array {
+        getDimension(d: number): Float32Array | Float64Array {
             return this.result.subarray(d * this.N,(d + 1) * this.N);
         }
 
-        get_trail(d: number) {
-            var x = this.get_dimension(d);
+        getTrail(d: number) {
+            var x = this.getDimension(d);
             var i: number;
             var result: Array<[number,number]> = new Array();
             for (i = 0; i < this.N; i++)
                 result.push([this.t[i], x[i]]);
+            return result;
+        }
+
+        getPhase(d1: number, d2: number) {
+            var x = this.getDimension(d1);
+            var y = this.getDimension(d2);
+            var i: number;
+            var result: Array<[number,number]> = new Array();
+            for (i = 0; i < this.N; i++)
+                result.push([x[i], y[i]]);
             return result;
         }
 
