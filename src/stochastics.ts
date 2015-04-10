@@ -76,11 +76,12 @@ module stochastics {
             var A_cur = A(y_cur, t[i], pA)
             var D_cur = D(y_cur, t[i], pD)
             t[i + 1] = (i + 1) * dt;
-            n = gaussian();
-            for (j = 0; j < d; j++)
+            for (j = 0; j < d; j++) {
+                n = gaussian();
                 result[i + 1 + j * N] = y_cur[j] =
                     y_cur[j] + dt * A_cur[j] +
                     n * D_cur[j] * sdt;
+            }
         }
         return new Solution(t, result, N);
     }
@@ -122,11 +123,12 @@ module stochastics {
             var D_cur = D(y_cur, t[i], pD)
             var Dy_cur = Dy(y_cur, t[i], pD)
             t[i + 1] = (i + 1) * dt;
-            n = boxMuller2();
-            for (j = 0; j < d; j++)
+            for (j = 0; j < d; j++) {
+                n = boxMuller2();
                 result[i + 1 + j * N] = y_cur[j] =
                     y_cur[j] + dt * A_cur[j] + n[0] * D_cur[j] * sdt
                     - dt / 2 * D_cur[j] * Dy_cur[j] * (1 - n[1] * n[1]);
+            }
         }
         return new Solution(t, result, N);
     }
@@ -163,7 +165,7 @@ module stochastics {
         var d: number = initial.length;
         var N: number = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
-        var noise = new Float32Array(N);
+        var noise = new Float32Array(N * d);
         var t = new Float32Array(N);
         var n: number = 4; // the most random number
 
@@ -179,20 +181,22 @@ module stochastics {
         var y_next = y_cur.slice();
         for (i = 0; i < N - 1; i++) {
             // advance the noise and time
-            n = boxMuller();
             t[i + 1] = (i + 1) * dt;
-            noise[i + 1] = noise[i] * rho + n * rhoc;
+            for (j=0; j<d; j++) {
+                n = boxMuller();
+                noise[i + 1 + j*N] = noise[i + j*N] * rho + n * rhoc;
+            }
             // use heun's method to advance the system
             var A_cur = A(y_cur, t[i], pA)
             var D_cur = D(y_cur, t[i], pD)
             for (j = 0; j < d; j++) {
-                k1[j] = A_cur[j] + D_cur[j] * noise[i];
+                k1[j] = A_cur[j] + D_cur[j] * noise[i + j*N];
                 y_next[j] = y_cur[j] + dt * k1[j];
             }
             var A_next = A(y_next, t[i], pA)
             var D_next = D(y_next, t[i], pD)
             for (j = 0; j < d; j++) {
-                k2[j] = A_next[j] + D_next[j] * noise[i + 1];
+                k2[j] = A_next[j] + D_next[j] * noise[i + 1 + j*N];
                 result[i + 1 + j * N] = y_cur[j] =
                 y_cur[j] + dt / 2 * (k1[j] + k2[j]);
             }
