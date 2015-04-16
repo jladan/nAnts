@@ -165,40 +165,45 @@ module stochastics {
         var d: number = initial.length;
         var N: number = Math.floor(t_final / dt);
         var result = new Float32Array(N * d);
-        var noise = new Float32Array(N * d);
         var t = new Float32Array(N);
         var n: number = 4; // the most random number
 
         // coefficients to advance noise
         var rho: number = Math.exp(-dt / tau);
-        var rhoc: number = sigma * Math.sqrt(1 - rho * rho);
+        var rhoc: number = sigma * Math.sqrt(1 - rho * rho); // XXX why sigma and not previous
 
-        // initial conditions
+        // Required variables
         var i: number, j: number;
-        var y_cur: number[] = initial.slice();
-        for (j = 0; j < d; j++) result[j * N] = initial[j];
         var k1 = new Array(d), k2 = new Array(d);
+        var noiseCur = new Array(d), noiseNext = new Array(d);
+
+        // Initial Conditions
+        var y_cur: number[] = initial.slice();
+        for (j = 0; j < d; j++) {
+            result[j * N] = initial[j];
+            noiseNext[j] = 0;
+        }
         var y_next = y_cur.slice();
         for (i = 0; i < N - 1; i++) {
             // advance the noise and time
             t[i + 1] = (i + 1) * dt;
             for (j=0; j<d; j++) {
+                noiseCur[j] = noiseNext[j];
                 n = boxMuller();
-                noise[i + 1 + j*N] = noise[i + j*N] * rho + n * rhoc;
+                noiseNext[j] = noiseCur[j] * rho + n * rhoc;
             }
             // use heun's method to advance the system
             var A_cur = A(y_cur, t[i], pA)
             var D_cur = D(y_cur, t[i], pD)
             for (j = 0; j < d; j++) {
-                k1[j] = A_cur[j] + D_cur[j] * noise[i + j*N];
+                k1[j] = A_cur[j] + D_cur[j] * noiseCur[j];
                 y_next[j] = y_cur[j] + dt * k1[j];
             }
             var A_next = A(y_next, t[i], pA)
             var D_next = D(y_next, t[i], pD)
             for (j = 0; j < d; j++) {
-                k2[j] = A_next[j] + D_next[j] * noise[i + 1 + j*N];
-                result[i + 1 + j * N] = y_cur[j] =
-                y_cur[j] + dt / 2 * (k1[j] + k2[j]);
+                k2[j] = A_next[j] + D_next[j] * noiseNext[j];
+                result[i + 1 + j * N] = y_cur[j] = y_cur[j] + dt / 2 * (k1[j] + k2[j]);
             }
         }
         return new Solution(t, result, N);
