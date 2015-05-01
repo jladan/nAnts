@@ -4,15 +4,10 @@
   "author": "John Ladan",
   "devDependencies": {
     "mocha": "2.0.x",
-    "should": "4.2.x"
+    "should": "4.2.x",
+    "typescript": "^1.5.0-beta"
   },
   "scripts": {
     "test": "mocha"
-  },
-  "modules": {
-    "algebra": "lib/algebra.js",
-    "ode": "lib/ode.js"
-  },
-  "dependencies": {
   }
 }
