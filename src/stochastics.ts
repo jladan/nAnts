@@ -20,21 +20,31 @@ module stochastics {
             return this.result.subarray(d * this.N,(d + 1) * this.N);
         }
 
-        getTrail(d: number) {
+        /** Extracts a 'trail' from the solution: pairs of (x,t)
+         * d is the index of the dimension (starting from 0)
+         * outStep is the number of time-steps between samples. Default to 1
+         */
+        getTrail(d: number, outStep?: number) {
+            outStep = outStep || 1;
             var x = this.getDimension(d);
             var i: number;
             var result: Array<[number,number]> = new Array();
-            for (i = 0; i < this.N; i++)
+            for (i = 0; i < this.N; i+=outStep)
                 result.push([this.t[i], x[i]]);
             return result;
         }
 
-        getPhase(d1: number, d2: number) {
+        /** Extracts a trail in phase-space, coordinate (x_1, x_2)
+         * d1, and d2  are the indices of the coordinates (starting from 0)
+         * outStep is the number of time-steps between samples. Default to 1
+         */
+        getPhase(d1: number, d2: number, outStep?: number) {
+            outStep = outStep || 1;
             var x = this.getDimension(d1);
             var y = this.getDimension(d2);
             var i: number;
             var result: Array<[number,number]> = new Array();
-            for (i = 0; i < this.N; i++)
+            for (i = 0; i < this.N; i+=outStep)
                 result.push([x[i], y[i]]);
             return result;
         }
