@@ -93,12 +93,12 @@ describe('Matrix', function () {
         });
         
         it('should work with right-identity (rectangle)', function () {
-            var I = Matrix.identity(B.size.m);
+            var I = Matrix.identity(B.size.n);
             B.multiply(I).should.eql(B);
         });
         
         it('should work with left-identity (square)', function () {
-            var I = Matrix.identity(B.size.n);
+            var I = Matrix.identity(B.size.m);
             I.multiply(B).should.eql(B);
         });
 

@@ -11,13 +11,13 @@
 */
 
 export class Size {
-    n: number
     m: number
-    constructor(n: number, m: number) {
-        this.n = n;
+    n: number
+    constructor(m: number, n: number) {
         this.m = m;
+        this.n = n;
     }
-    public copy() {return new Size(this.n, this.m);}
+    public copy() {return new Size(this.m, this.n);}
 }
 
 /** Matrix object
@@ -34,7 +34,7 @@ export class Matrix {
 
     constructor (size: [number,number] | Size, buffer?: number[]){
         this.size = size instanceof Size ?  size.copy(): new Size(size[0],size[1]);
-        this.array = buffer || new Array(this.size.n * this.size.m);
+        this.array = buffer || new Array(this.size.m * this.size.n);
     }
     
     /** return a copy of the matrix */
@@ -44,10 +44,10 @@ export class Matrix {
     static identity(size: number | Size) {
         var s = typeof size === "number" ? new Size(size,size) : size ;
         var r = new Matrix(s);
-        for (var i=0; i<s.n * s.m ; i++)
+        for (var i=0; i<s.m * s.n ; i++)
             r.array[i] = 0;
-        for ( i=0; i<Math.min(s.n,s.m); i++)
-            r.array[s.m*i + i] = 1;
+        for ( i=0; i<Math.min(s.m,s.n); i++)
+            r.array[s.n*i + i] = 1;
         return r;
     }
     
@@ -55,7 +55,7 @@ export class Matrix {
     static random(size: Size) {
         var r = new Matrix(size);
         var i: number;
-        for (i=0; i<size.n * size.m ; i++)
+        for (i=0; i<size.m * size.n ; i++)
             r.array[i] = Math.random();
         return r;
     }
@@ -91,16 +91,16 @@ export class Matrix {
     /** Multiply the matrix on the *right* by m */
     // TODO: profile this code
     public multiply(m : Matrix) {
-        if (this.size.m != m.size.n) 
+        if (this.size.n != m.size.m) 
             throw Error("The matrix dimensions don't agree for multiplication");
-        var result = new Matrix([this.size.n, m.size.m]);
+        var result = new Matrix([this.size.m, m.size.n]);
         var i,j,k;
-        for (i=0; i<result.size.n; i++) {
-            for (j=0; j<result.size.m; j++) {
-                result.array[result.size.m*i+j] = 0;
-                for (k=0; k<this.size.m; k++) {
-                    result.array[result.size.m*i+j] +=
-                        this.array[this.size.m*i+k] * m.array[m.size.m*k+j];
+        for (i=0; i<result.size.m; i++) {
+            for (j=0; j<result.size.n; j++) {
+                result.array[result.size.n*i+j] = 0;
+                for (k=0; k<this.size.n; k++) {
+                    result.array[result.size.n*i+j] +=
+                        this.array[this.size.n*i+k] * m.array[m.size.n*k+j];
                 }
             }
         }
@@ -110,11 +110,11 @@ export class Matrix {
     /** transpose a matrix
      */
     public transpose() {
-        var result = new Matrix([this.size[1], this.size[0]]);
+        var result = new Matrix([this.size.n, this.size.m]);
         var i,j;
-        for (i=0; i<this.size[0]; i++) {
-            for (j=0; j<this.size[1]; j++) {
-                result.array[result.size[1]*j+i] = this.array[this.size[1]*i+j];
+        for (i=0; i<this.size.m; i++) {
+            for (j=0; j<this.size.n; j++) {
+                result.array[result.size.n*j+i] = this.array[this.size.n*i+j];
             }
         }
         return result;
