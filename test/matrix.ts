@@ -117,7 +117,7 @@ describe('Matrix', function () {
 
         it('should swap the dimensions', function () {
             var M = new Matrix([3,20]);
-            M.transpose().size.should.eql([20,3]);
+            M.transpose().size.should.eql(new Size(20,3));
         });
 
         it('should move the elements properly (square)', function () {
@@ -133,7 +133,7 @@ describe('Matrix', function () {
     describe('#utSolve', function () {
 
         it('should work when used with the identity matrix', function () {
-            var x = Matrix.identity(b.size[0]).utSolve(b);
+            var x = Matrix.identity(b.size.m).utSolve(b);
             x.should.eql(b);
         });
 
@@ -160,7 +160,7 @@ describe('Matrix', function () {
     describe('#ltSolve', function () {
 
         it('should work when used with the identity matrix', function () {
-            var x = Matrix.identity(b.size[0]).ltSolve(b);
+            var x = Matrix.identity(b.size.m).ltSolve(b);
             x.should.eql(b);
         });
 
@@ -186,12 +186,12 @@ describe('Matrix', function () {
     describe('#solve', function () {
 
         it('should work when used with the identity matrix', function () {
-            var x = Matrix.identity(b.size[0]).solve(b);
+            var x = Matrix.identity(b.size.m).solve(b);
             x.should.eql(b);
         });
 
         it('should solve a general matrix', function () {
-            var A = Matrix.random([4,4]);
+            var A = Matrix.random(new Size(4,4));
             var x = new Matrix([4,1], [1,1,1,1]);
             var b = A.multiply(x);
             A.solve(b).should.eql(x);

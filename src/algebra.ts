@@ -63,12 +63,12 @@ export class Matrix {
     /** Return the sum of two matrices
      */
     public add(m: Matrix) {
-        if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
+        if (this.size.m != m.size.m || this.size.n != m.size.n)
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
                         ') must agree');
         var result = new Matrix(this.size)
         var i: number;
-        for (i=0; i<this.size[0]*this.size[1]; i++) {
+        for (i=0; i<this.size.m*this.size.n; i++) {
             result.array[i] = this.array[i] + m.array[i]
         }
         return result;
@@ -77,12 +77,12 @@ export class Matrix {
     /** Return the difference of two matrices
      */
     public subtract(m) {
-        if (this.size[0] != m.size[0] || this.size[1] != m.size[1])
+        if (this.size.m != m.size.m || this.size.n != m.size.n)
             throw Error('Matrix dimensions ('+this.size+', '+m.size+
                         ') must agree');
         var result = new Matrix(this.size)
         var i: number;
-        for (i=0; i<this.size[0]*this.size[1]; i++) {
+        for (i=0; i<this.size.m*this.size.n; i++) {
             result.array[i] = this.array[i] - m.array[i]
         }
         return result;
@@ -128,16 +128,16 @@ export class Matrix {
      * possible to use on an LU decomposition that's stored in a single matrix.
      */
     public utSolve(b) {
-        if (this.size[0] != this.size[1])
+        if (this.size.m !== this.size.n)
             throw new Error('Matrix must be square');
-        if (this.size[1] != b.size[0]) 
+        if (this.size.n != b.size.m) 
             throw new Error('Number of rows in the matrices must agree');
-        if (b.size[1] != 1)
+        if (b.size.n != 1)
             throw new Error('Upper triangular solve is only implemented for vectors in this version');
 
         var x = new Matrix(b.size);
         var xnew;
-        var N = this.size[0];
+        var N = this.size.m;
         var i,j;
         for (i = N-1; i>=0; i--) {
             xnew = b.array[i]
@@ -159,16 +159,16 @@ export class Matrix {
      * the diagonal elements are all one.
      */
     public ltSolve(b) {
-        if (this.size[0] != this.size[1])
+        if (this.size.m != this.size.n)
             throw new Error('Matrix must be square');
-        if (this.size[1] != b.size[0]) 
+        if (this.size.n != b.size.m) 
             throw new Error('Number of rows in the matrices must agree');
-        if (b.size[1] != 1)
+        if (b.size.n != 1)
             throw new Error('Lower triangular solve is only implemented for vectors in this version');
 
         var x = new Matrix(b.size);
         var xnew;
-        var N = this.size[0];
+        var N = this.size.m;
         var i,j;
         for (i = 0; i<N; i++) {
             xnew = b.array[i]
@@ -185,12 +185,12 @@ export class Matrix {
      * L is stored below the diagonal.
      */
     public luDecompose() {
-        if (this.size[0] != this.size[1])
+        if (this.size.m != this.size.n)
             throw new Error('Matrix must be square');
         
         // TODO: add pivoting
         var LU = this.copy();
-        var N = this.size[0];
+        var N = this.size.m;
         var k,l,c, m;
         for (k=0; k<N-1; k++) {
             for (l=k+1; l<N; l++) {
@@ -208,7 +208,7 @@ export class Matrix {
     public grabL() {
         var L = this.copy();
 
-        var N = L.size[0];
+        var N = L.size.m;
         var i, j;
         for (i=0; i<N; i++) {
             L.array[N*i+i] = 1;
@@ -224,7 +224,7 @@ export class Matrix {
     public grabU() {
         var U = this.copy();
 
-        var N = U.size[0];
+        var N = U.size.m;
         var i, j;
         for (i=0; i<N; i++) {
             for (j=0; j<i; j++) {
@@ -240,9 +240,9 @@ export class Matrix {
      * than just vectors, this can be used to invert a matrix.
      */
     public solve(b) {
-        if (this.size[0] != this.size[1])
+        if (this.size.m != this.size.n)
             throw new Error('Matrix must be square');
-        if (this.size[1] != b.size[0]) 
+        if (this.size.n != b.size.m) 
             throw new Error('Number of rows in the matrices must agree');
 
         // TODO: add pivoting
