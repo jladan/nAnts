@@ -1,7 +1,7 @@
 'use strict';
 var requirejs = require("requirejs");
 requirejs.config({
-    baseUrl: './src',
+    baseUrl: './build',
     nodeRequire: require
 });
 

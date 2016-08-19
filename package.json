@@ -5,9 +5,11 @@
   "devDependencies": {
     "mocha": "2.0.x",
     "should": "4.2.x",
-    "typescript": "^1.5.0-beta"
+    "typescript": "^1.8.0"
   },
   "scripts": {
+    "pretest": "tsc -p test --module commonjs",
+    "prepublish": "tsc",
     "test": "mocha"
   }
 }

@@ -1,63 +1,44 @@
-'use strict';
-var requirejs = require("requirejs");
-requirejs.config({
-    baseUrl: './src',
-    nodeRequire: require
-});
+///<reference path="../typings/mocha/mocha.d.ts" />
+///<reference path="../typings/should/should.d.ts" />
+
+import {Matrix, Size} from '../src/algebra'
 
 describe('Matrix', function () {
 
-    var algebra;
-    var A, B, AB, At, Bt;
-    var b, b2, b3;
-
-    var initializeData = function () {
-    }
-
-    before(function (done) {
-        // This saves the module for use in tests
-        // The `done` callback is used, because it's asynchronous
-        requirejs(['algebra'], function(mod) {
-            algebra = mod;
-            console.log("Matrix module loaded");
-            A = new algebra.Matrix([3,3],[1,2,3,4,5,6,7,8,9]);
-            B = new algebra.Matrix([3,1],[2,1,3]);
-            AB = new algebra.Matrix([3,1],[13,31,49]);        
-            At = new algebra.Matrix([3,3],[1,4,7,2,5,8,3,6,9]);
-            Bt = new algebra.Matrix([1,3],[2,1,3]);
-            b = new algebra.Matrix([3,1],[3,2,1]);
-            b2 = new algebra.Matrix([3,1], [6,11,9]);
-            b3 = new algebra.Matrix([3,1],[1,5,16]);
-            done();
-        });
-
-    });
+    var A = new Matrix([3,3],[1,2,3,4,5,6,7,8,9]);
+    var B = new Matrix([3,1],[2,1,3]);
+    var AB = new Matrix([3,1],[13,31,49]);
+    var At = new Matrix([3,3],[1,4,7,2,5,8,3,6,9]);
+    var Bt = new Matrix([1,3],[2,1,3]);
+    var b = new Matrix([3,1],[3,2,1]);
+    var b2 = new Matrix([3,1], [6,11,9]);
+    var b3 = new Matrix([3,1],[1,5,16]);
 
     describe('#Creation', function () {
 
         it('should use the provided array as a buffer', function () {
             var a = [1,2,3,4];
-            var m = new algebra.Matrix([2,2], a);
+            var m = new Matrix([2,2], a);
             m.array.should.equal(a);
         });
 
         it('should accept a nested-array as input', function () {
-            var size = [2,3];
+            var size : [number, number] = [2,3];
             var a = [1,2,3,4,5,6];
-            var m = new algebra.Matrix([[1,2,3],[4,5,6]]);
-            var n = new algebra.Matrix(size, a);
+            var m = new Matrix([[1,2,3],[4,5,6]]);
+            var n = new Matrix(size, a);
             n.should.eql(m);
         });
             
         it('should copy the size property', function () {
-            var size = [2,4];
-            var m = new algebra.Matrix(size);
+            var size = new Size(2,4);
+            var m = new Matrix(size);
             m.size.should.not.equal(size);
         });
 
         it('should have the correct size', function () {
-            var size = [2,4];
-            var m = new algebra.Matrix(size);
+            var size = new Size(2,4);
+            var m = new Matrix(size);
             m.size.should.eql(size);
         });
     });
@@ -66,34 +47,35 @@ describe('Matrix', function () {
 
         it('should default to square matrix', function (){
             var size = 3;
-            var m = new algebra.identity(size);
-            m.size.should.eql([size,size]);
+            var m = Matrix.identity(size);
+            m.size.should.eql(new Size(size,size));
             m.array.length.should.eql(size*size);
         });
 
         it('should make the correct size', function (){
-            var size = [3,3];
-            var m = new algebra.identity(size);
+            var size = new Size(3,3);
+            var m = Matrix.identity(size);
             m.size.should.eql(size);
-            m.array.length.should.eql(size[0]*size[1]);
+            m.array.length.should.eql(size.n*size.m);
         });
 
         it('should return an identity matrix', function () {
             var a = [1,0,0,0,1,0,0,0,1]; //3x3 identity array
-            var m = new algebra.identity([3,3]);
+            var size = new Size(3,3);
+            var m = Matrix.identity(size);
             m.array.should.eql(a);
         });
 
         it('should make a rectangular matrix if asked for', function (){
-            var size = [2,4];
-            var m = new algebra.identity(size);
+            var size = new Size(2,4);
+            var m = Matrix.identity(size);
             m.size.should.eql(size);
         });
 
         it('should have ones on the diagonal in rectangular case', function () {
-            var size = [3,4];
+            var size = new Size(3,4);
             var a = [1,0,0,0, 0,1,0,0, 0,0,1,0]; //in row-major format
-            var m = new algebra.identity(size);
+            var m = Matrix.identity(size);
             m.array.should.eql(a);
         });
     });
@@ -101,22 +83,22 @@ describe('Matrix', function () {
     describe('#multiply', function () {
 
         it('should work with right-identity (square)', function () {
-            var I = algebra.identity(A.size);
+            var I = Matrix.identity(A.size);
             A.multiply(I).should.eql(A);
         });
         
         it('should work with left-identity (square)', function () {
-            var I = algebra.identity(A.size);
+            var I = Matrix.identity(A.size);
             I.multiply(A).should.eql(A);
         });
         
         it('should work with right-identity (rectangle)', function () {
-            var I = algebra.identity(B.size[1]);
+            var I = Matrix.identity(B.size.m);
             B.multiply(I).should.eql(B);
         });
         
         it('should work with left-identity (square)', function () {
-            var I = algebra.identity(B.size[0]);
+            var I = Matrix.identity(B.size.n);
             I.multiply(B).should.eql(B);
         });
 
@@ -125,16 +107,16 @@ describe('Matrix', function () {
         });
 
         it('should have the correct size', function () {
-            var M = new algebra.Matrix([4,10]);
-            var N = new algebra.Matrix([10,2]);
-            M.multiply(N).size.should.eql([4,2]);
+            var M = new Matrix([4,10]);
+            var N = new Matrix([10,2]);
+            M.multiply(N).size.should.eql(new Size(4,2));
         });
     });
 
     describe('#transpose', function () {
 
         it('should swap the dimensions', function () {
-            var M = new algebra.Matrix([3,20]);
+            var M = new Matrix([3,20]);
             M.transpose().size.should.eql([20,3]);
         });
 
@@ -151,12 +133,12 @@ describe('Matrix', function () {
     describe('#utSolve', function () {
 
         it('should work when used with the identity matrix', function () {
-            var x = new algebra.identity(b.size[0]).utSolve(b);
+            var x = Matrix.identity(b.size[0]).utSolve(b);
             x.should.eql(b);
         });
 
         it('should solve the upper part of a general matrix', function () {
-            var x = new algebra.Matrix([3,1],[1,1,1]);
+            var x = new Matrix([3,1],[1,1,1]);
             A.utSolve(b2).should.eql(x);
         });
         
@@ -165,7 +147,7 @@ describe('Matrix', function () {
         });
 
         it("should throw an error if dimensions don't match", function () {
-            var x = new algebra.Matrix([4,1])
+            var x = new Matrix([4,1])
             A.utSolve.bind(A,x).should.throw();
         });
 
@@ -178,12 +160,12 @@ describe('Matrix', function () {
     describe('#ltSolve', function () {
 
         it('should work when used with the identity matrix', function () {
-            var x = new algebra.identity(b.size[0]).ltSolve(b);
+            var x = Matrix.identity(b.size[0]).ltSolve(b);
             x.should.eql(b);
         });
 
         it('should solve the lower part of a general matrix', function () {
-            var x = new algebra.Matrix([3,1],[1,1,1]);
+            var x = new Matrix([3,1],[1,1,1]);
             A.ltSolve(b3).should.eql(x);
         });
         
@@ -192,7 +174,7 @@ describe('Matrix', function () {
         });
 
         it("should throw an error if dimensions don't match", function () {
-            var x = new algebra.Matrix([4,1])
+            var x = new Matrix([4,1])
             A.ltSolve.bind(A,x).should.throw();
         });
 
@@ -204,13 +186,13 @@ describe('Matrix', function () {
     describe('#solve', function () {
 
         it('should work when used with the identity matrix', function () {
-            var x = new algebra.identity(b.size[0]).solve(b);
+            var x = Matrix.identity(b.size[0]).solve(b);
             x.should.eql(b);
         });
 
         it('should solve a general matrix', function () {
-            var A = algebra.random([4,4]);
-            var x = new algebra.Matrix([4,1], [1,1,1,1]);
+            var A = Matrix.random([4,4]);
+            var x = new Matrix([4,1], [1,1,1,1]);
             var b = A.multiply(x);
             A.solve(b).should.eql(x);
         });
@@ -220,7 +202,7 @@ describe('Matrix', function () {
         });
 
         it("should throw an error if dimensions don't match", function () {
-            var x = new algebra.Matrix([4,1])
+            var x = new Matrix([4,1])
             A.solve.bind(A,x).should.throw();
         });
 
