@@ -11,5 +11,15 @@
     "pretest": "tsc -p test --module commonjs",
     "prepublish": "tsc",
     "test": "mocha"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jladan/nAnts"
+  },
+  "keywords": [
+    "numerics",
+    "math",
+    "dynamics"
+  ],
+  "license": "Simple BSD"
 }
