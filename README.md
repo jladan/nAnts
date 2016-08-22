@@ -6,6 +6,10 @@ Our full goal is to perform accurate and efficient mathematical simulations in t
 
 *This is a rewrite of nAnjs using typescript. Hooray for static checking!*
 
+# Building/testing
+
+The modules can be built using the `tsc` command (no arguments needed). The `.js` files are left in `build/`. Testing is done with `mocha`, but the test suites must be built first. This is automated with `npm test`.
+
 # Features
 
 Performance is attained by using flat arrays for all multidimensional matrix manipulation. Algorithms are designed for accuracy/stability first, then speed. Often, multiple algorithms will be offered for the same task, as they have different advantages and uses for teaching.
